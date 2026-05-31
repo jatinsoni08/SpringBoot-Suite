@@ -109,7 +109,7 @@ spring.jpa.properties.hibernate.format_sql=true
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/[your-username]/SPRINGBOOT-SUITE.git
+git clone https://github.com/jatinsoni08/SPRINGBOOT-SUITE.git
 
 # 2. Navigate into a project
 cd SpringBoot-CRUD-Projects/StudentManagementSystem_01
