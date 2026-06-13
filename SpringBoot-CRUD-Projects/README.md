@@ -1,6 +1,6 @@
 # 🚀 SPRINGBOOT-SUITE
 
-> A collection of production-structured Spring Boot applications — built from scratch with layered architecture, Spring Data JPA, MySQL, Spring Security, and Thymeleaf.
+> A collection of 5 production-structured Spring Boot CRUD applications — each built from scratch with layered architecture, Spring Data JPA, and MySQL.
 
 ---
 
@@ -8,20 +8,17 @@
 
 ```
 SPRINGBOOT-SUITE/
-├── SpringBoot-CRUD-Projects/
-│   ├── StudentManagementSystem_01/    → DB: studentspringdb          | Port: 8080
-│   ├── EmployeeManagementSystem_02/   → DB: employeespringdb         | Port: 8080
-│   ├── ProductManagementSystem_03/    → DB: productspringdb          | Port: 8080
-│   ├── BookManagementSystem_04/       → DB: bookmanagement_springdb  | Port: 8080
-│   └── CustomerManagementSystem_05/   → DB: Customer_springdb        | Port: 8989
-│
-└── SpringBoot-FullStack-Projects/
-    └── CustomerManagementSystem/      → DB: customer_springdb        | Port: 8989
+└── SpringBoot-CRUD-Projects/
+    ├── StudentManagementSystem_01/    → DB: studentspringdb          | Port: 8080
+    ├── EmployeeManagementSystem_02/   → DB: employeespringdb         | Port: 8080
+    ├── ProductManagementSystem_03/    → DB: productspringdb          | Port: 8080
+    ├── BookManagementSystem_04/       → DB: bookmanagement_springdb  | Port: 8080
+    └── CustomerManagementSystem_05/   → DB: Customer_springdb        | Port: 8989
 ```
 
 ---
 
-## 🛠️ Common Tech Stack (CRUD Projects)
+## 🛠️ Common Tech Stack (All 5 Projects)
 
 | Technology                   | Role                          |
 | ---------------------------- | ----------------------------- |
@@ -36,7 +33,7 @@ SPRINGBOOT-SUITE/
 
 ---
 
-## 🏗️ Layered Architecture (Applied in All Projects)
+## 🏗️ Layered Architecture (Applied in All 5 Projects)
 
 ```
 HTTP Request
@@ -68,7 +65,7 @@ HTTP Request
 
 ---
 
-## 📦 CRUD Projects At a Glance
+## 📦 Projects At a Glance
 
 | #   | Project                                                                            | MySQL Table      | Key Fields                         | Port     |
 | --- | ---------------------------------------------------------------------------------- | ---------------- | ---------------------------------- | -------- |
@@ -76,19 +73,11 @@ HTTP Request
 | 02  | [EmployeeManagementSystem](./SpringBoot-CRUD-Projects/EmployeeManagementSystem_02) | `employee`       | empId, empName, empsalary, empcity | 8080     |
 | 03  | [ProductManagementSystem](./SpringBoot-CRUD-Projects/ProductManagementSystem_03)   | `products`       | pid, pname, pprice, pquantity      | 8080     |
 | 04  | [BookManagementSystem](./SpringBoot-CRUD-Projects/BookManagementSystem_04)         | `book`           | id, title, author, price           | 8080     |
-| 05  | [CustomerManagementSystem](./SpringBoot-CRUD-Projects/CustomerManagementSystem_05) | `customer_table` | id, name, city, mobile, email      | **8989** |
+| 05  | [CustomerManagementSystem](./SpringBoot-CRUD-Projects/CustomerManagementSystem_05) | `customer_table` | id, name, city, mobile             | **8989** |
 
 ---
 
-## 🌟 FullStack Projects At a Glance
-
-| #   | Project                                                                              | Key Features                                                       | Port     |
-| --- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | -------- |
-| 01  | [CustomerManagementSystem](./SpringBoot-FullStack-Projects/CustomerManagementSystem) | OAuth2, Role Based Access, Thymeleaf UI, Email, Exception Handling | **8989** |
-
----
-
-## 📡 REST API Pattern (CRUD Projects)
+## 📡 REST API Pattern (Consistent Across All Projects)
 
 ```
 POST   /{resource}/save           → Create new record
@@ -120,9 +109,6 @@ spring.jpa.properties.hibernate.format_sql=true
 
 ```bash
 # 1. Clone the repository
-
-git clone https://github.com/jatinsoni08/SpringBoot-Suite.git
-
 git clone https://github.com/jatinsoni08/SPRINGBOOT-SUITE.git
 
 # 2. Navigate into a project
@@ -140,18 +126,16 @@ mvn spring-boot:run
 
 ---
 
-## 🧠 Key Learnings Across All Projects
+## 🧠 Key Learnings Across All 5 Projects
 
 - **Service Interface Pattern** — Controller injects the interface, not the impl class. Clean abstraction.
 - **Constructor Injection** — Used throughout instead of field-level `@Autowired`
-- **JpaRepository** — Zero SQL written. `save()`, `findAll()`, `findById()`, `deleteById()` all inherited
-- **findById().orElseThrow()** — Proper exception handling instead of null returns
+- **JpaRepository** — 5 repos, zero SQL written. `save()`, `findAll()`, `findById()`, `deleteById()` all inherited
+- **findById().orElse(null)** — null-safe retrieval used consistently in every update flow
 - **ddl-auto=update** — Hibernate auto-creates and syncs tables on every startup
-- **show-sql=true** — Every query printed to console, great for understanding JPA behavior
+- **show-sql=true** — every query printed to console, great for understanding JPA behavior
 - **Lombok @Data** — `@AllArgsConstructor` + `@NoArgsConstructor` keeps all entities clean
-- **OAuth2 + Form Login** — Dual authentication strategy with role-based access control
-- **Global Exception Handling** — `@RestControllerAdvice` for clean error responses
-- **Thymeleaf + Spring Security** — Server-side rendering with `sec:authorize` for role-based UI
+- **5 Separate MySQL DBs** — each project has its own isolated database
 
 ---
 

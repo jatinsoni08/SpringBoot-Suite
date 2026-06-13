@@ -166,7 +166,7 @@ spring.jpa.properties.hibernate.format_sql=true
 CREATE DATABASE productspringdb;
 
 # 2. Clone & navigate
-git clone https://github.com/[your-username]/SpringBoot-CRUD-Suite.git
+git clone https://github.com/jatinsoni08/SpringBoot-Suite.git
 cd SpringBootCRUDProjects/ProductManagementSystem_03
 
 # 3. Update credentials in application.properties
