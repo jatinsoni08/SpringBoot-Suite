@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Login - CMS</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', sans-serif;
+			background: #f0f2f5;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+		}
+
+		.login-card {
+			background: white;
+			border: 1px solid #e8e8e8;
+			border-radius: 16px;
+			padding: 40px;
+			width: 380px;
+			text-align: center;
+		}
+
+		.logo {
+			font-size: 40px;
+			margin-bottom: 12px;
+		}
+
+		.login-card h2 {
+			font-size: 20px;
+			font-weight: 600;
+			color: #333;
+			margin-bottom: 6px;
+		}
+
+		.login-card p {
+			font-size: 13px;
+			color: #999;
+			margin-bottom: 30px;
+		}
+
+		.divider {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin: 24px 0;
+		}
+
+		.divider hr {
+			flex: 1;
+			border: none;
+			border-top: 1px solid #eee;
+		}
+
+		.divider span {
+			font-size: 12px;
+			color: #bbb;
+		}
+
+		.btn-google {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #e0e0e0;
+			border-radius: 8px;
+			background: white;
+			font-size: 14px;
+			font-weight: 500;
+			color: #333;
+			cursor: pointer;
+			text-decoration: none;
+			transition: background 0.2s;
+			margin-bottom: 16px;
+		}
+
+		.btn-google:hover {
+			background: #f8f8f8;
+		}
+
+		.btn-google img {
+			width: 18px;
+			height: 18px;
+		}
+
+		.form-group {
+			margin-bottom: 14px;
+			text-align: left;
+		}
+
+		label {
+			font-size: 12px;
+			font-weight: 600;
+			color: #666;
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		input {
+			width: 100%;
+			padding: 10px 14px;
+			border: 1px solid #e0e0e0;
+			border-radius: 8px;
+			font-size: 13px;
+			outline: none;
+		}
+
+		input:focus {
+			border-color: #1a73e8;
+			box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+		}
+
+		.btn-login {
+			width: 100%;
+			background: #1a73e8;
+			color: white;
+			border: none;
+			padding: 11px;
+			border-radius: 8px;
+			font-size: 14px;
+			font-weight: 500;
+			cursor: pointer;
+			margin-top: 6px;
+		}
+
+		.btn-login:hover {
+			background: #1557b0;
+		}
+
+		.error-msg {
+			background: #fce8e6;
+			color: #c62828;
+			font-size: 12px;
+			padding: 10px;
+			border-radius: 8px;
+			margin-bottom: 14px;
+		}
+
+		.footer-text {
+			font-size: 11px;
+			color: #bbb;
+			margin-top: 24px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="login-card">
+		<div class="logo">&#128102;</div>
+		<h2>Customer Management</h2>
+		<p>Sign in to continue</p>
+
+		<!-- ERROR MESSAGE -->
+		<div class="error-msg" th:if="${param.error}">
+			<i class="fa-solid fa-circle-exclamation"></i> Invalid username or password
+		</div>
+
+		<!-- GOOGLE LOGIN -->
+		<a href="/oauth2/authorization/google" class="btn-google">
+			<img src="https://www.google.com/favicon.ico" alt="Google" />
+			Continue with Google
+		</a>
+
+		<div class="divider">
+			<hr /><span>or sign in with credentials</span>
+			<hr />
+		</div>
+
+		<!-- BASIC AUTH FORM -->
+		<form th:action="@{/login}" method="post">
+			<div class="form-group">
+				<label>Username</label>
+				<input type="text" name="username" placeholder="Enter username" required />
+			</div>
+			<div class="form-group">
+				<label>Password</label>
+				<input type="password" name="password" placeholder="Enter password" required />
+			</div>
+			<button type="submit" class="btn-login">
+				<i class="fa-solid fa-right-to-bracket"></i> Sign In
+			</button>
+		</form>
+
+		<p class="footer-text">CustomerManagementSystem v1.0 &bull; Secured by Spring Security</p>
+	</div>
+
+</body>
+
+</html>

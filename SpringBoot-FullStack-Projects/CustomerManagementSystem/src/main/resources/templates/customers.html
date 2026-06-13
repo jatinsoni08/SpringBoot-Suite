@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Customer Management</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', sans-serif;
+			background: #f0f2f5;
+			display: flex;
+			height: 100vh;
+			overflow: hidden;
+		}
+
+		/* SIDEBAR */
+		.sidebar {
+			width: 220px;
+			background: white;
+			border-right: 1px solid #e8e8e8;
+			display: flex;
+			flex-direction: column;
+			flex-shrink: 0;
+		}
+
+		.sidebar-logo {
+			padding: 20px 16px;
+			border-bottom: 1px solid #f0f0f0;
+		}
+
+		.sidebar-logo p {
+			font-size: 14px;
+			font-weight: 600;
+			color: #1a73e8;
+		}
+
+		.sidebar-logo span {
+			font-size: 11px;
+			color: #999;
+		}
+
+		.nav-section {
+			padding: 12px 8px;
+			flex: 1;
+		}
+
+		.nav-label {
+			font-size: 10px;
+			color: #bbb;
+			padding: 4px 8px 6px;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.nav-item {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 9px 10px;
+			border-radius: 8px;
+			font-size: 13px;
+			color: #555;
+			cursor: pointer;
+			margin-bottom: 2px;
+			text-decoration: none;
+		}
+
+		.nav-item:hover {
+			background: #f5f5f5;
+			color: #333;
+		}
+
+		.nav-item.active {
+			background: #e8f0fe;
+			color: #1a73e8;
+			font-weight: 600;
+		}
+
+		.nav-item i {
+			font-size: 15px;
+			width: 18px;
+			text-align: center;
+		}
+
+		.nav-item.logout {
+			color: #ea4335;
+		}
+
+		.nav-item.logout:hover {
+			background: #fce8e6;
+		}
+
+		.sidebar-user {
+			padding: 14px 16px;
+			border-top: 1px solid #f0f0f0;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.avatar {
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			background: #e8f0fe;
+			color: #1a73e8;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 12px;
+			font-weight: 600;
+			flex-shrink: 0;
+		}
+
+		.sidebar-user p {
+			font-size: 12px;
+			font-weight: 600;
+			color: #333;
+		}
+
+		.sidebar-user span {
+			font-size: 11px;
+			color: #999;
+		}
+
+		/* MAIN */
+		.main {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+
+		.topbar {
+			background: white;
+			border-bottom: 1px solid #e8e8e8;
+			padding: 14px 24px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.topbar h2 {
+			font-size: 16px;
+			font-weight: 600;
+			color: #333;
+		}
+
+		.btn-primary {
+			background: #1a73e8;
+			color: white;
+			border: none;
+			padding: 9px 18px;
+			border-radius: 8px;
+			font-size: 13px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			text-decoration: none;
+		}
+
+		.btn-primary:hover {
+			background: #1557b0;
+		}
+
+		.content {
+			padding: 20px 24px;
+			flex: 1;
+			overflow-y: auto;
+		}
+
+		/* STATS */
+		.stats-grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 12px;
+			margin-bottom: 20px;
+		}
+
+		.stat-card {
+			background: white;
+			border: 1px solid #e8e8e8;
+			border-radius: 10px;
+			padding: 16px;
+		}
+
+		.stat-card .label {
+			font-size: 12px;
+			color: #999;
+			margin-bottom: 8px;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.stat-card .value {
+			font-size: 24px;
+			font-weight: 600;
+			color: #333;
+		}
+
+		.stat-card .sub {
+			font-size: 11px;
+			color: #34a853;
+			margin-top: 4px;
+		}
+
+		/* TABLE */
+		.table-card {
+			background: white;
+			border: 1px solid #e8e8e8;
+			border-radius: 10px;
+			overflow: hidden;
+		}
+
+		.table-header {
+			padding: 14px 18px;
+			border-bottom: 1px solid #f0f0f0;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.table-header p {
+			font-size: 14px;
+			font-weight: 600;
+			color: #333;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th {
+			font-size: 12px;
+			font-weight: 600;
+			color: #999;
+			padding: 10px 16px;
+			text-align: left;
+			background: #fafafa;
+			border-bottom: 1px solid #f0f0f0;
+		}
+
+		td {
+			font-size: 13px;
+			color: #444;
+			padding: 12px 16px;
+			border-bottom: 1px solid #f8f8f8;
+		}
+
+		tr:last-child td {
+			border-bottom: none;
+		}
+
+		tr:hover td {
+			background: #fafbff;
+		}
+
+		.action-btns {
+			display: flex;
+			gap: 6px;
+		}
+
+		.btn-edit {
+			background: #e8f5e9;
+			color: #2e7d32;
+			border: none;
+			padding: 6px 12px;
+			border-radius: 6px;
+			font-size: 12px;
+			cursor: pointer;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.btn-edit:hover {
+			background: #c8e6c9;
+		}
+
+		.btn-delete {
+			background: #fce8e6;
+			color: #c62828;
+			border: none;
+			padding: 6px 12px;
+			border-radius: 6px;
+			font-size: 12px;
+			cursor: pointer;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.btn-delete:hover {
+			background: #ffcdd2;
+		}
+
+		.empty {
+			text-align: center;
+			padding: 50px;
+			color: #bbb;
+			font-size: 14px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- SIDEBAR -->
+	<div class="sidebar">
+		<div class="sidebar-logo">
+			<p>&#128102; CMS</p>
+			<span>Customer Management</span>
+		</div>
+		<div class="nav-section">
+			<div class="nav-label">Main</div>
+			<a href="/web/customers" class="nav-item active">
+				<i class="fa-solid fa-house"></i> Dashboard
+			</a>
+			<a href="/web/customers/add" class="nav-item" sec:authorize="hasRole('ADMIN')">
+				<i class="fa-solid fa-user-plus"></i> Add Customer
+			</a>
+			<div class="nav-label" style="margin-top: 12px;">Account</div>
+			<a href="/logout" class="nav-item logout" onclick="return confirm('Logout karna chahte ho?')">
+				<i class="fa-solid fa-right-from-bracket"></i> Logout
+			</a>
+		</div>
+		<div class="sidebar-user">
+			<div class="avatar" sec:authentication="name">U</div>
+			<div>
+				<p sec:authentication="name">User</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- MAIN -->
+	<div class="main">
+		<div class="topbar">
+			<h2>&#128202; Dashboard</h2>
+			<a href="/web/customers/add" class="btn-primary">
+				<i class="fa-solid fa-plus"></i> Add Customer
+			</a>
+		</div>
+
+		<div class="content">
+			<!-- STATS -->
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="label"><i class="fa-solid fa-users"></i> Total Customers</div>
+					<div class="value" th:text="${#lists.size(customers)}">0</div>
+					<div class="sub">Registered</div>
+				</div>
+				<div class="stat-card">
+					<div class="label"><i class="fa-solid fa-envelope"></i> Emails Sent</div>
+					<div class="value" th:text="${#lists.size(customers)}">0</div>
+					<div class="sub">Auto on register</div>
+				</div>
+				<div class="stat-card">
+					<div class="label"><i class="fa-solid fa-shield"></i> Auth Type</div>
+					<div class="value" style="font-size: 14px; padding-top: 6px;">OAuth2</div>
+					<div class="sub">Google Login</div>
+				</div>
+				<div class="stat-card">
+					<div class="label"><i class="fa-solid fa-server"></i> Port</div>
+					<div class="value" style="font-size: 18px; padding-top: 4px;">8989</div>
+					<div class="sub">Running</div>
+				</div>
+			</div>
+
+			<!-- TABLE -->
+			<div class="table-card">
+				<div class="table-header">
+					<p>All Customers</p>
+					<span style="font-size: 12px; color: #999;" th:text="${#lists.size(customers)} + ' records'"></span>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>City</th>
+							<th>Mobile</th>
+							<th>Email</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${#lists.isEmpty(customers)}">
+							<td colspan="6" class="empty">
+								<i class="fa-solid fa-inbox"
+									style="font-size: 30px; margin-bottom: 10px; display: block;"></i>
+								No customers found. Add your first customer!
+							</td>
+						</tr>
+						<tr th:each="customer : ${customers}">
+							<td th:text="${customer.id}"></td>
+							<td th:text="${customer.name}"></td>
+							<td th:text="${customer.city}"></td>
+							<td th:text="${customer.mobile}"></td>
+							<td th:text="${customer.email}"></td>
+							<td>
+								<div class="action-btns">
+									<!-- Sirf ADMIN ko dikhega -->
+									<th:block sec:authorize="hasRole('ADMIN')">
+										<a th:href="@{/web/customers/edit/{id}(id=${customer.id})}" class="btn-edit">
+											<i class="fa-solid fa-pen"></i> Edit
+										</a>
+										<a th:href="@{/web/customers/delete/{id}(id=${customer.id})}" class="btn-delete"
+											onclick="return confirm('Delete this customer?')">
+											<i class="fa-solid fa-trash"></i> Delete
+										</a>
+									</th:block>
+									<!-- USER ko dikhega -->
+									<th:block sec:authorize="hasRole('USER')">
+										<span style="font-size: 12px; color: #bbb;">View only</span>
+									</th:block>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
